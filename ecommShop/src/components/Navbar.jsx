@@ -1,13 +1,15 @@
 import { Link } from "react-router-dom";
+import { useCart } from "../state/cartContext";
 
 export default function Navbar() {
+  const { itemCount } = useCart();
+
   return (
     <header style={styles.header}>
       <Link to="/" style={styles.brand}>e-commerce Shop</Link>
-
       <nav style={styles.nav}>
         <Link to="/" style={styles.link}>Home</Link>
-        <Link to="/cart" style={styles.link}>Cart</Link>
+        <Link to="/cart" style={styles.link}>Cart ({itemCount})</Link>
       </nav>
     </header>
   );
