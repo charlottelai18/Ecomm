@@ -3,35 +3,43 @@ export default function VariantSelector({ variants, selected, onChange }) {
   const sizes = [...new Set(variants.map((v) => v.size).filter(Boolean))];
 
   return (
-    <div style={{ display: "flex", gap: 12, margin: "12px 0" }}>
-      <label style={{ display: "grid", gap: 6 }}>
+    <div className="variant-group">
+      <label className="variant-label">
         Colour
-        <select
-          value={selected.colour || ""}
-          onChange={(e) => onChange({ ...selected, colour: e.target.value })}
-        >
-          <option value="">Select…</option>
-          {colours.map((c) => (
-            <option key={c} value={c}>
-              {c}
-            </option>
-          ))}
-        </select>
+        <div className="variant-select">
+          <select
+            value={selected.colour || ""}
+            onChange={(e) =>
+              onChange({ ...selected, colour: e.target.value })
+            }
+          >
+            <option value="">Select…</option>
+            {colours.map((c) => (
+              <option key={c} value={c}>
+                {c}
+              </option>
+            ))}
+          </select>
+        </div>
       </label>
 
-      <label style={{ display: "grid", gap: 6 }}>
+      <label className="variant-label">
         Size
-        <select
-          value={selected.size || ""}
-          onChange={(e) => onChange({ ...selected, size: e.target.value })}
-        >
-          <option value="">Select…</option>
-          {sizes.map((s) => (
-            <option key={s} value={s}>
-              {s}
-            </option>
-          ))}
-        </select>
+        <div className="variant-select">
+          <select
+            value={selected.size || ""}
+            onChange={(e) =>
+              onChange({ ...selected, size: e.target.value })
+            }
+          >
+            <option value="">Select…</option>
+            {sizes.map((s) => (
+              <option key={s} value={s}>
+                {s}
+              </option>
+            ))}
+          </select>
+        </div>
       </label>
     </div>
   );

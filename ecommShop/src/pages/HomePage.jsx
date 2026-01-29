@@ -34,7 +34,7 @@ export default function HomePage() {
   if (error) return <p style={{ padding: 16 }}>{error}</p>;
 
   return (
-    <div style={{ padding: 16 }}>
+    <div style={{ padding: 16 }} className="container">
       <FeaturedCarousel products={featured} />
       <h2>All products</h2>
       <ProductGrid products={products} />

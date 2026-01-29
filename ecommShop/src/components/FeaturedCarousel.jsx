@@ -29,7 +29,7 @@ const styles = {
   item: {
     minWidth: 190,
     textDecoration: "none",
-    color: "#111",
+    color: "#000000ff",
     border: "1px solid #eee",
     borderRadius: 12,
     background: "white",
