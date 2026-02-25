@@ -1,0 +1,822 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// ─── Google Fonts ─────────────────────────────────────────────────
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+
+// ─── Reset & Base ─────────────────────────────────────────────────
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: $cream;
+  color: $charcoal;
+  font-family: $font-body;
+  font-size: $text-base;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: $font-display;
+  line-height: 1.2;
+  margin: 0;
+  color: $charcoal;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  font-family: $font-body;
+  cursor: pointer;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+// ─── Layout ───────────────────────────────────────────────────────
+.container {
+  width: min(1200px, 100%);
+  margin: 0 auto;
+  padding: $space-md $space-lg;
+
+  @include mobile {
+    padding: $space-md;
+  }
+}
+
+// ─── Navbar ───────────────────────────────────────────────────────
+.navBar {
+  position: sticky;
+  top: 0;
+  z-index: $z-navbar;
+  background: rgba($white, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid $cream-border;
+  padding: 0 $space-lg;
+
+  @include mobile {
+    padding: 0 $space-md;
+  }
+}
+
+.navInner {
+  @include flex-between;
+  height: 64px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.brand {
+  font-family: $font-display;
+  font-size: $text-xl;
+  font-weight: 700;
+  color: $forest;
+  letter-spacing: -0.02em;
+  transition: color $transition-fast;
+
+  &:hover {
+    color: $forest-light;
+  }
+
+  span {
+    color: $terra;
+  }
+}
+
+.navLinks {
+  display: flex;
+  align-items: center;
+  gap: $space-lg;
+
+  a {
+    font-size: $text-sm;
+    font-weight: 600;
+    color: $mid-grey;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    transition: color $transition-fast;
+    @include focus-ring;
+
+    &:hover {
+      color: $charcoal;
+    }
+  }
+}
+
+.cartLink {
+  @include flex-center;
+  gap: $space-xs;
+  background: $forest;
+  color: $white !important;
+  padding: 8px 18px;
+  border-radius: $radius-pill;
+  font-size: $text-sm !important;
+  font-weight: 700 !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+  transition: background $transition-fast, transform $transition-fast !important;
+
+  &:hover {
+    background: $forest-light !important;
+    color: $white !important;
+    transform: translateY(-1px);
+  }
+
+  .cart-badge {
+    background: $terra;
+    color: $white;
+    border-radius: $radius-pill;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    font-size: $text-xs;
+    font-weight: 700;
+    @include flex-center;
+  }
+}
+
+// ─── Page titles ──────────────────────────────────────────────────
+.page-title {
+  font-family: $font-display;
+  font-size: $text-xxl;
+  color: $charcoal;
+  margin-bottom: $space-xs;
+
+  @include mobile {
+    font-size: $text-xl;
+  }
+}
+
+.page-subtitle {
+  font-size: $text-base;
+  color: $mid-grey;
+  margin-bottom: $space-xl;
+}
+
+// ─── Featured Carousel ────────────────────────────────────────────
+.featured-section {
+  margin-bottom: $space-xl;
+
+  .featured-title {
+    font-family: $font-display;
+    font-size: $text-xl;
+    color: $charcoal;
+    margin-bottom: $space-md;
+
+    &::after {
+      content: '';
+      display: block;
+      width: 48px;
+      height: 3px;
+      background: $terra;
+      border-radius: $radius-pill;
+      margin-top: 6px;
+    }
+  }
+}
+
+.featured-row {
+  display: flex;
+  gap: $space-md;
+  overflow-x: auto;
+  padding-bottom: $space-md;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.featured-item {
+  flex: 0 0 210px;
+  text-decoration: none;
+  color: $charcoal;
+  background: $white;
+  border: 1px solid $cream-border;
+  border-radius: $radius-lg;
+  padding: $space-sm;
+  transition: box-shadow $transition-base, transform $transition-base;
+
+  &:hover {
+    box-shadow: $shadow-hover;
+    transform: translateY(-3px);
+
+    .featured-item__img {
+      transform: scale(1.04);
+    }
+  }
+
+  &__img-wrap {
+    width: 100%;
+    height: 130px;
+    border-radius: $radius-md;
+    overflow: hidden;
+    background: $cream-dark;
+  }
+
+  &__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform $transition-slow;
+  }
+
+  &__label {
+    margin-top: $space-sm;
+    font-weight: 600;
+    font-size: $text-sm;
+    color: $charcoal;
+    padding: 0 4px;
+  }
+
+  &__badge {
+    display: inline-block;
+    margin-top: 4px;
+    padding: 2px 8px;
+    background: $terra-pale;
+    color: $terra;
+    font-size: $text-xs;
+    font-weight: 700;
+    border-radius: $radius-pill;
+  }
+}
+
+// ─── Section heading ──────────────────────────────────────────────
+.section-heading {
+  font-family: $font-display;
+  font-size: $text-lg;
+  color: $charcoal;
+  margin: $space-xl 0 $space-md;
+  display: flex;
+  align-items: center;
+  gap: $space-sm;
+
+  &::before {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: $terra;
+    border-radius: 50%;
+  }
+}
+
+// ─── Product Card ─────────────────────────────────────────────────
+.product-card {
+  @include card;
+  display: block;
+  text-decoration: none;
+  color: $charcoal;
+  padding: $space-sm;
+  position: relative;
+  overflow: hidden;
+
+  &__image-wrap {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: $radius-md;
+    overflow: hidden;
+    background: $cream-dark;
+  }
+
+  &__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform $transition-slow;
+  }
+
+  &:hover &__img {
+    transform: scale(1.06);
+  }
+
+  &__body {
+    padding: 10px 4px 4px;
+  }
+
+  &__row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: $space-sm;
+  }
+
+  &__name {
+    font-family: $font-display;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: $charcoal;
+  }
+
+  &__fav {
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  &__price {
+    font-size: $text-sm;
+    font-weight: 700;
+    color: $forest;
+    margin-top: 6px;
+  }
+
+  &__badge {
+    position: absolute;
+    top: $space-md;
+    left: $space-md;
+    background: $terra;
+    color: $white;
+    font-size: $text-xs;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: $radius-pill;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+}
+
+// ─── Product Grid ─────────────────────────────────────────────────
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: $space-md;
+
+  @include mobile {
+    grid-template-columns: repeat(2, 1fr);
+    gap: $space-sm;
+  }
+}
+
+// ─── Search bar ───────────────────────────────────────────────────
+.search-bar {
+  position: relative;
+  margin-bottom: $space-lg;
+
+  &__icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: $mid-grey;
+    font-size: 16px;
+    pointer-events: none;
+  }
+
+  input {
+    width: 100%;
+    padding: 13px 16px 13px 44px;
+    border: 1.5px solid $cream-border;
+    border-radius: $radius-pill;
+    background: $white;
+    font-family: $font-body;
+    font-size: $text-base;
+    color: $charcoal;
+    transition: border-color $transition-fast, box-shadow $transition-fast;
+    box-shadow: $shadow-card;
+
+    &::placeholder {
+      color: $light-grey;
+    }
+
+    &:focus {
+      outline: none;
+      border-color: $forest;
+      box-shadow: 0 0 0 3px rgba($forest, 0.12);
+    }
+  }
+}
+
+// ─── Product Page ─────────────────────────────────────────────────
+.product-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $space-xl;
+  padding: $space-xl $space-lg;
+  max-width: 1100px;
+  margin: 0 auto;
+
+  @include tablet {
+    grid-template-columns: 1fr;
+    padding: $space-md;
+  }
+}
+
+.product-image-wrap {
+  border-radius: $radius-xl;
+  overflow: hidden;
+  background: $cream-dark;
+  aspect-ratio: 1 / 1;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.product-info {
+  display: grid;
+  gap: $space-md;
+  align-content: start;
+  padding-top: $space-sm;
+
+  &__name {
+    font-family: $font-display;
+    font-size: $text-xxl;
+    color: $charcoal;
+
+    @include mobile {
+      font-size: $text-xl;
+    }
+  }
+
+  &__price {
+    font-size: $text-xl;
+    font-weight: 700;
+    color: $forest;
+  }
+
+  &__stock {
+    display: inline-flex;
+    align-items: center;
+    gap: $space-xs;
+    font-size: $text-sm;
+    color: $mid-grey;
+    background: $cream-dark;
+    padding: 6px 14px;
+    border-radius: $radius-pill;
+    width: fit-content;
+  }
+
+  &__add-btn {
+    @include btn-primary;
+    width: 100%;
+    padding: 16px;
+    font-size: $text-md;
+    border-radius: $radius-lg;
+  }
+}
+
+// ─── Variant Selector ─────────────────────────────────────────────
+.variant-group {
+  display: flex;
+  gap: $space-md;
+  flex-wrap: wrap;
+}
+
+.variant-label {
+  display: grid;
+  gap: 6px;
+  font-size: $text-xs;
+  font-weight: 700;
+  color: $mid-grey;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.variant-select {
+  position: relative;
+  min-width: 160px;
+
+  select {
+    width: 100%;
+    padding: 11px 40px 11px 14px;
+    border-radius: $radius-md;
+    border: 1.5px solid $cream-border;
+    background-color: $white;
+    color: $charcoal;
+    font-family: $font-body;
+    font-size: $text-sm;
+    font-weight: 600;
+    appearance: none;
+    cursor: pointer;
+    transition: border-color $transition-fast;
+
+    &:focus {
+      outline: none;
+      border-color: $forest;
+    }
+  }
+
+  &::after {
+    content: '▾';
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: $mid-grey;
+    pointer-events: none;
+    font-size: 12px;
+  }
+}
+
+// ─── Quantity Stepper ─────────────────────────────────────────────
+.qty-stepper {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-sm;
+  background: $cream-dark;
+  border-radius: $radius-pill;
+  padding: 4px;
+
+  &__btn {
+    @include flex-center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: none;
+    background: $white;
+    color: $charcoal;
+    font-size: 18px;
+    font-weight: 700;
+    box-shadow: $shadow-card;
+    transition: background $transition-fast, color $transition-fast;
+    padding: 0;
+
+    &:hover:not(:disabled) {
+      background: $terra;
+      color: $white;
+    }
+
+    &:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+  }
+
+  &__value {
+    min-width: 28px;
+    text-align: center;
+    font-weight: 700;
+    font-size: $text-base;
+    color: $charcoal;
+  }
+}
+
+// ─── Cart Page ────────────────────────────────────────────────────
+.cart-page {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: $space-xl $space-lg;
+
+  @include mobile {
+    padding: $space-md;
+  }
+}
+
+.cart-title {
+  font-family: $font-display;
+  font-size: $text-xxl;
+  margin-bottom: $space-xs;
+}
+
+.cart-subtitle {
+  color: $mid-grey;
+  font-size: $text-sm;
+  margin-bottom: $space-xl;
+}
+
+.cart-items {
+  display: grid;
+  gap: $space-sm;
+}
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  gap: $space-md;
+  padding: $space-md;
+  background: $white;
+  border: 1px solid $cream-border;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-card;
+  transition: box-shadow $transition-base;
+
+  &:hover {
+    box-shadow: $shadow-hover;
+  }
+
+  @include mobile {
+    flex-wrap: wrap;
+  }
+
+  &__thumb {
+    width: 90px;
+    height: 90px;
+    border-radius: $radius-md;
+    object-fit: cover;
+    flex-shrink: 0;
+    background: $cream-dark;
+  }
+
+  &__info {
+    flex: 1;
+    display: grid;
+    gap: 4px;
+  }
+
+  &__name {
+    font-family: $font-display;
+    font-weight: 700;
+    font-size: $text-md;
+    color: $charcoal;
+  }
+
+  &__meta {
+    font-size: $text-xs;
+    color: $mid-grey;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 600;
+  }
+
+  &__price {
+    font-weight: 700;
+    font-size: $text-base;
+    color: $forest;
+  }
+
+  &__controls {
+    display: flex;
+    align-items: center;
+    gap: $space-sm;
+    flex-shrink: 0;
+
+    @include mobile {
+      width: 100%;
+      justify-content: space-between;
+    }
+  }
+
+  &__remove {
+    @include btn-ghost;
+    font-size: $text-xs;
+    padding: 7px 14px;
+    color: $terra;
+    border-color: rgba($terra, 0.3);
+
+    &:hover {
+      background: $terra-pale;
+      border-color: $terra;
+      color: $terra;
+    }
+  }
+}
+
+.cart-summary {
+  margin-top: $space-xl;
+  padding: $space-lg;
+  background: $white;
+  border: 1px solid $cream-border;
+  border-radius: $radius-xl;
+  box-shadow: $shadow-card;
+
+  &__row {
+    @include flex-between;
+    font-size: $text-sm;
+    color: $mid-grey;
+    padding: 6px 0;
+  }
+
+  &__total {
+    @include flex-between;
+    font-family: $font-display;
+    font-size: $text-xl;
+    color: $charcoal;
+    padding-top: $space-sm;
+    margin-top: $space-sm;
+    border-top: 1.5px solid $cream-border;
+  }
+
+  &__actions {
+    display: grid;
+    gap: $space-sm;
+    margin-top: $space-lg;
+  }
+
+  &__checkout {
+    @include btn-primary;
+    width: 100%;
+    padding: 16px;
+    font-size: $text-md;
+    border-radius: $radius-lg;
+    justify-content: center;
+  }
+
+  &__clear {
+    @include btn-ghost;
+    width: 100%;
+    padding: 12px;
+    justify-content: center;
+  }
+}
+
+// ─── Empty Cart ───────────────────────────────────────────────────
+.empty-cart {
+  text-align: center;
+  padding: $space-xxl $space-lg;
+
+  &__emoji {
+    font-size: 64px;
+    margin-bottom: $space-md;
+    animation: bounce 1.6s ease-in-out infinite;
+  }
+
+  &__title {
+    font-family: $font-display;
+    font-size: $text-xl;
+    margin-bottom: $space-sm;
+  }
+
+  &__sub {
+    color: $mid-grey;
+    margin-bottom: $space-xl;
+  }
+
+  &__btn {
+    @include btn-primary;
+  }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+// ─── Toast notification ───────────────────────────────────────────
+.toast {
+  position: fixed;
+  bottom: $space-lg;
+  right: $space-lg;
+  z-index: $z-toast;
+  background: $charcoal;
+  color: $white;
+  padding: 12px 20px;
+  border-radius: $radius-lg;
+  font-size: $text-sm;
+  font-weight: 600;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  gap: $space-sm;
+  animation: slideUp 0.3s $transition-slow, fadeOut 0.3s 2.2s ease forwards;
+  max-width: 320px;
+
+  &__icon {
+    font-size: 18px;
+  }
+
+  @include mobile {
+    bottom: $space-md;
+    right: $space-md;
+    left: $space-md;
+    max-width: none;
+  }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to   { opacity: 0; pointer-events: none; }
+}
+
+// ─── Loading / Error states ───────────────────────────────────────
+.state-wrapper {
+  @include flex-center;
+  flex-direction: column;
+  gap: $space-md;
+  min-height: 50vh;
+  color: $mid-grey;
+  font-size: $text-base;
+}
+
+.spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid $cream-border;
+  border-top-color: $forest;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

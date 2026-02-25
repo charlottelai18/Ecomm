@@ -1,0 +1,59 @@
+// ─── Colour Palette ───────────────────────────────────────────────
+$cream:          #faf6f0;
+$cream-dark:     #f0e9df;
+$cream-border:   #e5dbd0;
+
+$forest:         #2d5a3d;
+$forest-light:   #3d7a52;
+$forest-pale:    #eaf2ec;
+
+$terra:          #c4622d;
+$terra-light:    #d97b45;
+$terra-pale:     #fdf0e8;
+
+$charcoal:       #1e2a22;
+$mid-grey:       #6b7c72;
+$light-grey:     #b0bcb5;
+
+$white:          #ffffff;
+
+// ─── Spacing ──────────────────────────────────────────────────────
+$space-xs:   4px;
+$space-sm:   8px;
+$space-md:   16px;
+$space-lg:   24px;
+$space-xl:   40px;
+$space-xxl:  64px;
+
+// ─── Typography ───────────────────────────────────────────────────
+$font-display: 'Playfair Display', Georgia, serif;
+$font-body:    'DM Sans', 'Helvetica Neue', sans-serif;
+
+$text-xs:    11px;
+$text-sm:    13px;
+$text-base:  15px;
+$text-md:    17px;
+$text-lg:    22px;
+$text-xl:    28px;
+$text-xxl:   38px;
+
+// ─── Radii ────────────────────────────────────────────────────────
+$radius-sm:  6px;
+$radius-md:  12px;
+$radius-lg:  18px;
+$radius-xl:  28px;
+$radius-pill: 999px;
+
+// ─── Shadows ──────────────────────────────────────────────────────
+$shadow-card:  0 2px 12px rgba(30,42,34,0.07), 0 1px 3px rgba(30,42,34,0.05);
+$shadow-hover: 0 8px 32px rgba(30,42,34,0.13), 0 2px 8px rgba(30,42,34,0.08);
+$shadow-btn:   0 2px 8px rgba(196,98,45,0.30);
+
+// ─── Transitions ──────────────────────────────────────────────────
+$transition-fast:   0.15s ease;
+$transition-base:   0.25s ease;
+$transition-slow:   0.4s cubic-bezier(0.16, 1, 0.3, 1);
+
+// ─── Z-index ──────────────────────────────────────────────────────
+$z-navbar: 100;
+$z-toast:  200;

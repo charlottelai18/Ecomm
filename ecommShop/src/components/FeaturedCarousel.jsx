@@ -4,42 +4,20 @@ export default function FeaturedCarousel({ products }) {
   if (!products?.length) return null;
 
   return (
-    <section style={{ marginBottom: 16 }}>
-      <h2 style={{ marginBottom: 8 }}>Featured</h2>
+    <section className="featured-section">
+      <h2 className="featured-title">Featured Picks</h2>
 
-      <div style={styles.row}>
+      <div className="featured-row">
         {products.map((p) => (
-          <Link key={p.id} to={`/product/${p.id}`} style={styles.item}>
-            <img src={p.imageUrl} alt={p.name} style={styles.img} />
-            <div style={styles.label}>{p.name}</div>
+          <Link key={p.id} to={`/product/${p.id}`} className="featured-item">
+            <div className="featured-item__img-wrap">
+              <img src={p.imageUrl} alt={p.name} className="featured-item__img" />
+            </div>
+            <div className="featured-item__label">{p.name}</div>
+            <div className="featured-item__badge">Featured</div>
           </Link>
         ))}
       </div>
     </section>
   );
 }
-
-const styles = {
-  row: {
-    display: "flex",
-    gap: 12,
-    overflowX: "auto",
-    paddingBottom: 8,
-  },
-  item: {
-    minWidth: 190,
-    textDecoration: "none",
-    color: "#000000ff",
-    border: "1px solid #eee",
-    borderRadius: 12,
-    background: "white",
-    padding: 10,
-  },
-  img: {
-    width: "100%",
-    height: 120,
-    objectFit: "cover",
-    borderRadius: 10,
-  },
-  label: { marginTop: 8, fontWeight: 600, fontSize: 14 },
-};

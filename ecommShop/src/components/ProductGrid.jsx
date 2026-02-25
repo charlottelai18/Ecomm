@@ -1,20 +1,15 @@
 import ProductCard from "./ProductCard";
 
 export default function ProductGrid({ products }) {
+  if (!products?.length) {
+    return <p style={{ color: "#6b7c72", marginTop: 32, textAlign: "center" }}>No products found.</p>;
+  }
+
   return (
-    <section style={styles.grid}>
+    <div className="product-grid">
       {products.map((p) => (
         <ProductCard key={p.id} product={p} />
       ))}
-    </section>
+    </div>
   );
 }
-
-const styles = {
-  grid: {
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-    gap: 16,
-    marginTop: 16,
-  },
-};

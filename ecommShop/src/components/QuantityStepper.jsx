@@ -3,20 +3,24 @@ export default function QuantityStepper({ value, min = 1, max = 99, onChange }) 
   const inc = () => onChange(Math.min(max, value + 1));
 
   return (
-    <div style={styles.wrap}>
-      <button onClick={dec} disabled={value <= min} style={styles.btn}>
+    <div className="qty-stepper">
+      <button
+        onClick={dec}
+        disabled={value <= min}
+        className="qty-stepper__btn"
+        aria-label="Decrease quantity"
+      >
         −
       </button>
-      <div style={styles.value}>{value}</div>
-      <button onClick={inc} disabled={value >= max} style={styles.btn}>
+      <div className="qty-stepper__value">{value}</div>
+      <button
+        onClick={inc}
+        disabled={value >= max}
+        className="qty-stepper__btn"
+        aria-label="Increase quantity"
+      >
         +
       </button>
     </div>
   );
 }
-
-const styles = {
-  wrap: { display: "inline-flex", alignItems: "center", gap: 8 },
-  btn: { width: 32, height: 32 },
-  value: { minWidth: 24, textAlign: "center", fontWeight: 700 },
-};

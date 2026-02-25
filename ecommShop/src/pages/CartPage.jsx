@@ -1,73 +1,70 @@
+import { Link } from "react-router-dom";
 import { useCart } from "../state/cartContext";
 
 export default function CartPage() {
-  const { state, dispatch, total } = useCart();
-
-  const items = Object.entries(state.items); 
+  const { state, dispatch, total, itemCount } = useCart();
+  const items = Object.entries(state.items);
 
   if (items.length === 0) {
     return (
-      <div style={{ padding: 16 }} className="emptyCart">
-        <h1>Oh no!</h1>
-        <p>Your cart is empty :(</p>
+      <div className="empty-cart">
+        <div className="empty-cart__emoji">🛒</div>
+        <h1 className="empty-cart__title">Your cart is empty</h1>
+        <p className="empty-cart__sub">Looks like you haven't added anything yet!</p>
+        <Link to="/" className="empty-cart__btn" style={{ display: "inline-flex", textDecoration: "none" }}>
+          🐾 Start Shopping
+        </Link>
       </div>
     );
   }
 
   return (
-    <div style={{ padding: 16 }}>
-      <h1>Cart</h1>
+    <div className="cart-page">
+      <h1 className="cart-title">Your Cart</h1>
+      <p className="cart-subtitle">{itemCount} item{itemCount !== 1 ? "s" : ""} ready for checkout</p>
 
-      <div style={{ display: "grid", gap: 12 }}>
+      <div className="cart-items">
         {items.map(([key, item]) => (
-          <div key={key} style={styles.row}>
-            <img src={item.imageUrl} alt={item.name} style={styles.thumb} />
+          <div key={key} className="cart-item">
+            <img src={item.imageUrl} alt={item.name} className="cart-item__thumb" />
 
-            <div style={styles.info}>
-              <div style={styles.name}>{item.name}</div>
-              <div style={styles.meta}>Variant: {item.variantKey}</div>
-              <div style={styles.price}>${Number(item.price).toFixed(2)}</div>
+            <div className="cart-item__info">
+              <div className="cart-item__name">{item.name}</div>
+              <div className="cart-item__meta">Variant: {item.variantKey}</div>
+              <div className="cart-item__price">${(Number(item.price) * item.qty).toFixed(2)}</div>
             </div>
 
-            <div style={styles.controls}>
-              <button
-                onClick={() => {
-                  // if qty would go below 1, remove the item (gives you 0 total)
-                  if (item.qty <= 1) {
-                    dispatch({ type: "REMOVE_ITEM", payload: { key } });
-                  } else {
-                    dispatch({
-                      type: "SET_QTY",
-                      payload: { key, qty: item.qty - 1 },
-                    });
+            <div className="cart-item__controls">
+              {/* Qty stepper inline */}
+              <div className="qty-stepper">
+                <button
+                  className="qty-stepper__btn"
+                  onClick={() => {
+                    if (item.qty <= 1) {
+                      dispatch({ type: "REMOVE_ITEM", payload: { key } });
+                    } else {
+                      dispatch({ type: "SET_QTY", payload: { key, qty: item.qty - 1 } });
+                    }
+                  }}
+                >
+                  −
+                </button>
+                <div className="qty-stepper__value">{item.qty}</div>
+                <button
+                  className="qty-stepper__btn"
+                  onClick={() =>
+                    dispatch({ type: "SET_QTY", payload: { key, qty: item.qty + 1 } })
                   }
-                }}
-                style={styles.btn}
-              >
-                −
-              </button>
-
-              <span style={styles.qty}>{item.qty}</span>
-
-              <button
-                onClick={() =>
-                  dispatch({
-                    type: "SET_QTY",
-                    payload: { key, qty: item.qty + 1 },
-                  })
-                }
-                style={styles.btn}
-                disabled={item.qty >= item.maxStock}
-                title={
-                  item.qty >= item.maxStock ? "Reached max stock" : "Increase quantity"
-                }
-              >
-                +
-              </button>
+                  disabled={item.qty >= item.maxStock}
+                  title={item.qty >= item.maxStock ? "Max stock reached" : "Increase"}
+                >
+                  +
+                </button>
+              </div>
 
               <button
+                className="cart-item__remove"
                 onClick={() => dispatch({ type: "REMOVE_ITEM", payload: { key } })}
-                style={styles.remove}
               >
                 Remove
               </button>
@@ -76,42 +73,32 @@ export default function CartPage() {
         ))}
       </div>
 
-      <hr style={{ margin: "16px 0" }} />
+      <div className="cart-summary">
+        <div className="cart-summary__row">
+          <span>Subtotal</span>
+          <span>${total.toFixed(2)}</span>
+        </div>
+        <div className="cart-summary__row">
+          <span>Shipping</span>
+          <span>Calculated at checkout</span>
+        </div>
+        <div className="cart-summary__total">
+          <span>Total</span>
+          <span>${total.toFixed(2)}</span>
+        </div>
 
-      <h2>Total: ${total.toFixed(2)}</h2>
-
-      <button onClick={() => dispatch({ type: "CLEAR_CART" })} style={styles.clear}>
-        Clear cart
-      </button>
+        <div className="cart-summary__actions">
+          <button className="cart-summary__checkout" disabled>
+            Proceed to Checkout
+          </button>
+          <button
+            className="cart-summary__clear"
+            onClick={() => dispatch({ type: "CLEAR_CART" })}
+          >
+            Clear Cart
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
-
-const styles = {
-  row: {
-    display: "flex",
-    alignItems: "center",
-    gap: 14,
-    padding: 14,
-    background: "white",
-    borderRadius: 14,
-    border: "1px solid #eee",
-  },
-  thumb: {
-    width: 80,
-    height: 80,
-    borderRadius: 12,
-    objectFit: "cover",
-  },
-  info: { flex: 1, display: "grid", gap: 4 },
-  name: { fontWeight: 800, fontSize: 16, color: "#111" },
-  meta: { fontSize: 12, opacity: 0.75, color: "#111" },
-  price: { fontWeight: 700, opacity: 0.9, color: "#111" },
-
-  controls: { display: "flex", alignItems: "center", gap: 10 },
-  btn: { width: 38, height: 34, borderRadius: 10 },
-  qty: { minWidth: 18, textAlign: "center", fontWeight: 800, color: "#111" },
-
-  remove: { padding: "8px 12px", borderRadius: 10 },
-  clear: { padding: "10px 14px", borderRadius: 12 },
-};

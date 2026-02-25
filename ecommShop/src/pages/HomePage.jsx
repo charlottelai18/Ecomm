@@ -7,6 +7,7 @@ export default function HomePage() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [query, setQuery] = useState("");
 
   useEffect(() => {
     (async () => {
@@ -24,20 +25,56 @@ export default function HomePage() {
     })();
   }, []);
 
-  // Carousel will show favourited products
   const featured = useMemo(
     () => products.filter((p) => p.favourited === true),
     [products]
   );
 
-  if (loading) return <p style={{ padding: 16 }}>Loading…</p>;
-  if (error) return <p style={{ padding: 16 }}>{error}</p>;
+  const filtered = useMemo(() => {
+    if (!query.trim()) return products;
+    const q = query.toLowerCase();
+    return products.filter(
+      (p) =>
+        p.name?.toLowerCase().includes(q) ||
+        p.description?.toLowerCase().includes(q)
+    );
+  }, [products, query]);
+
+  if (loading) {
+    return (
+      <div className="state-wrapper">
+        <div className="spinner" />
+        <span>Loading products…</span>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="state-wrapper">
+        <span>⚠️ {error}</span>
+      </div>
+    );
+  }
 
   return (
-    <div style={{ padding: 16 }} className="container">
+    <div className="container">
       <FeaturedCarousel products={featured} />
-      <h2>All products</h2>
-      <ProductGrid products={products} />
+
+      <h2 className="section-heading">All Products</h2>
+
+      {/* Search bar */}
+      <div className="search-bar">
+        <span className="search-bar__icon">🔍</span>
+        <input
+          type="text"
+          placeholder="Search for treats, toys, beds…"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+        />
+      </div>
+
+      <ProductGrid products={filtered} />
     </div>
   );
 }
